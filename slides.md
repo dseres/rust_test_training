@@ -9,7 +9,7 @@ styles: {}
 
 # Introduction
 
-Dávid Seres
+## Dávid Seres
 
 freelancer
 
@@ -314,6 +314,14 @@ fn test_download() {
   assert_eq!(50, download(&mock).lines().count(), "Downloaded file should have 50 lines");
 }
 ```
+
+---
+
+# Benchmarks
+
+* [Unstable feature](https://doc.rust-lang.org/unstable-book/library-features/test.html), use nightly toolchain
+* Use external libraries
+* [https://github.com/bheisler/criterion.rs] can be a good alternative
 
 ---
 
