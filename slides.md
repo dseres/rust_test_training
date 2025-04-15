@@ -211,3 +211,106 @@ Try the following commands:
 cargo test --example slide6 
 cargo test --example slide6 -- --include-ignored
 ```
+
+---
+
+# Doc tests
+
+```rust
+/// Parse a series of unsigned 8bit integers.
+/// 
+/// The series of itegers must be strict, there must be exactly one space between
+/// two integers.
+/// 
+/// # Examples
+/// 
+/// ```rust
+/// use rtt::parse;
+/// let requirement = Vec::from([ 
+///     Vec::from([23,42]), 
+///     Vec::from([11,111])
+/// ]);
+/// assert_eq!(parse("23 42\n11 111"), requirement);
+///  ```
+/// 
+/// ```rust,should_panic```
+/// # use rtt::parse;
+/// parse("23 42\n   111");
+///  ```
+pub fn parse(input: &str) -> Vec<Vec<u8>> {
+    ...
+}
+```
+
+---
+
+# Integration tests
+
+Move testable functions from `src/main.rs` to `src/lib.rs`: 
+
+```rust
+pub fn parse(input: &str) -> Vec<Vec<u8>> ...
+pub fn download() -> Result<String, Box<dyn Error>> ...
+pub fn minmax(image: &[Vec<u8>]) -> (u8, u8) ...
+```
+
+The `main.rs` will contain only the `main` function.
+
+Create a file under `tests`:
+
+```rust
+use rtt::*;
+
+#[test]
+fn integration_test() {
+    let image = crate::parse("0 1\n2 3");
+    assert_eq!(
+        crate::minmax(&image),
+        (0_u8, 3_u8),
+        "Min and max should be 0 and 3 on the predefined matrix."
+    )
+}
+```
+
+--- 
+
+# Mocking
+
+## Sometimes we need to emulate something
+
+## Use an external library. 
+
+* Mockall - most rusty
+* Mockers - Google Mock inspirated
+* Galvanic Mock - behaviour driven
+* Wiremock - for HTTP
+
+---
+
+# Mockall example
+```rust
+use mockall::*;
+use mockall::predicate::*;
+
+#[automock]
+trait Downloader {
+  fn download(&self, url: &str) -> String;
+}
+
+fn download(my_struct: &dyn Downloader) -> String {
+    my_struct.download( "https://raw.githubusercontent.com/dseres/rust_test_training/refs/heads/master/examples/image.txt")
+}
+
+#[test]
+fn test_download() {
+  let mut mock = MockDownloader::new();
+ 
+  let image_txt = std::fs::read_to_string("examples/image.txt").unwrap();
+  mock.expect_download()
+      .with(predicate::eq("https://raw.githubusercontent.com/dseres/rust_test_training/refs/heads/master/examples/image.txt"))
+      .return_const(image_txt);
+
+  
+  assert_eq!(50, download(&mock).lines().count(), "Downloaded file should have 50 lines");
+}
+```

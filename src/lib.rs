@@ -1,5 +1,25 @@
 use std::error::Error;
 
+/// Parse a series of unsigned 8bit integers.
+/// 
+/// The series of itegers must be strict, there must be exactly one space between
+/// two integers.
+/// 
+/// # Examples
+/// 
+/// ```rust
+/// use rtt::parse;
+/// let requirement = Vec::from([ 
+///     Vec::from([23,42]), 
+///     Vec::from([11,111])
+/// ]);
+/// assert_eq!(parse("23 42\n11 111"), requirement);
+///  ```
+/// 
+/// ```rust,should_panic```
+/// # use rtt::parse;
+/// parse("23 42\n   111");
+///  ```
 pub fn parse(input: &str) -> Vec<Vec<u8>> {
     let mut image: Vec<Vec<u8>> = Vec::new();
     for input_line in input.trim().lines() {
