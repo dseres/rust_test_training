@@ -1,2 +1,2 @@
 pyyaml==5.3.1
-lookatme
+lookatme==v3.0.0-rc5
