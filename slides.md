@@ -314,3 +314,23 @@ fn test_download() {
   assert_eq!(50, download(&mock).lines().count(), "Downloaded file should have 50 lines");
 }
 ```
+
+---
+
+# Advanced problems
+
+## Cross-compiling
+
+* You cannot run test targets on host
+* Those should be transfered to target
+* [https://github.com/cross-rs/cross](https://github.com/cross-rs/cross)
+
+## Embedded programming - testing on emulator/device
+
+* Mission impossible
+* Play with `#[cfg]` macros
+  * Provide function to emulate hardware's functions on host
+  * Run tests on host
+* On ARM it is possible
+  * [https://github.com/knurling-rs/defmt](https://github.com/knurling-rs/defmt)
+
