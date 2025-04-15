@@ -2,8 +2,6 @@ use std::error::Error;
 use std::vec::Vec;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    println!("Hello, world!");
-
     let input = reqwest::blocking::get("https://raw.githubusercontent.com/dseres/rust_test_training/refs/heads/master/examples/image.txt")?.text()?;
 
     let mut image : Vec<Vec<u8>> = Vec::new();
@@ -20,5 +18,5 @@ fn main() -> Result<(), Box<dyn Error>> {
     let max = image.iter().map(|line| line.iter().max().unwrap()).min().unwrap();
 
     println!("{min},{max}");
-    return Ok(());
+    Ok(())
 }
