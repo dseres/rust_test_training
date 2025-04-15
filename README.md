@@ -6,7 +6,7 @@ Install and show presentation:
 ```bash
 git clone https://github.com/dseres/rust_test_training.git
 cd rust_test_training
-sudo apt install -y libyaml-dev 
+sudo apt install -y libyaml-dev libssl-dev pkg-config
 python3 -m venv .venv
 source ./venv/bin/activate
 pip3 install -r requirements.txt
